@@ -1,6 +1,6 @@
 # FE-MID-STARTER
 
-前端中间层统一架构
+前端中间层统一架构，使用 NestJS 构建的一个用于服务聚合的 BFF 层。
 
 ## 技术选型
 
@@ -45,8 +45,32 @@ export type ResponseDataType = {
 - 在 EnhanceLogInterceptor 和 RequestInterceptor 进行统一的日志输出。
 - 在 Exception 中进行错误日志输出。
 
+### 缓存
+
+- 使用 cache-manager 库作为内存高速缓存。
+- 其中全局的 CacheKey 可以统一在 common/cache.key.ts 中配置。
+- 内存缓存可以与 Redis 等联合使用。
+
+### 数据库
+
+- 作为中间层，应该尽量减少直接的数据库操作，但是作为基础框架，我们提供数据库的选型和 Demo。
+
+### DTO & 类验证器
+
+- 依赖：class-validator class-transformer
+- 自定义 ValidatePipe
+- 在 DTO 中使用相关装饰器
+- 全局 filter:UnprocessableExceptionFilter 中能够捕捉到相关错误。
+
 ### TODO:
 
 - 业务错误码已经定义，但是否能够提供默认统一的错误描述。
 - 统一日志输出内容规范，并且需要动态处理日志等级。
 - 根据实际业务，配置日志输出目标，细化日志输出落库与轮转功能。
+- 优化 UnprocessableExceptionFilter，输出具体 target 等信息。
+
+### Demos:
+
+#### Cache Manager
+
+#### Database - Redis

@@ -13,4 +13,5 @@ export type ResponseDataType = {
   message?: any;
   data?: any;
   extra?: ResponseExtraData & Record<string, any>;
+  [x: string]: any;
 };

@@ -28,6 +28,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const responseData: ResponseDataType = exceptionMessage;
     if (exception instanceof BusinessException) {
       statusCode = HttpStatus.OK;
+    } else {
+      responseData.code = statusCode;
+      delete responseData.statusCode;
     }
     responseData.extra = {
       path: request.url,
