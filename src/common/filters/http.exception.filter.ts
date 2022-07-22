@@ -30,7 +30,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       statusCode = HttpStatus.OK;
     } else {
       responseData.code = statusCode;
-      delete responseData.statusCode;
     }
     responseData.extra = {
       path: request.url,

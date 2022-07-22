@@ -44,6 +44,25 @@ export type ResponseDataType = {
 - 使用 winston 作为日志处理库。
 - 在 EnhanceLogInterceptor 和 RequestInterceptor 进行统一的日志输出。
 - 在 Exception 中进行错误日志输出。
+- 在 Module 中使用，如果以 Inject 方式注入使用，无法在该模块中全局定义 context，需要在不同的方法中传入 context。
+
+```typescript
+@Injectable()
+export class TestService {
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private logger: Logger,
+  ) {
+    this.logger.log('logger信息');
+    this.logger.log('带有context的logger信息', 'TestService');
+  }
+}
+// 日志输出如下：
+// [Nest] 53053  - 2022/07/22 10:36:12     LOG logger信息
+// [Nest] 53053  - 2022/07/22 10:36:12     LOG [TestService] 带有context的logger信息
+```
+
+- 可以使用实例化的 Logger，这样就能在该模块全局注入 context
 
 ### 缓存
 
@@ -68,9 +87,14 @@ export type ResponseDataType = {
 - 统一日志输出内容规范，并且需要动态处理日志等级。
 - 根据实际业务，配置日志输出目标，细化日志输出落库与轮转功能。
 - 优化 UnprocessableExceptionFilter，输出具体 target 等信息。
+- SSR
+- Logger 需要再次处理，无法输出 Object，需要手动 Stringify 一下。
 
 ### Demos:
 
 #### Cache Manager
+
+- 抹平 Cache 操作
+- 接入 Redis
 
 #### Database - Redis
