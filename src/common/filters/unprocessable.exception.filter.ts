@@ -28,7 +28,9 @@ export class UnprocessableExceptionFilter
       code?: number;
       error?: string;
     };
+
     const { message: validationErrors, code, error } = r;
+
     this.validationFilter(validationErrors);
     const responseData = {
       code: code || statusCode,
