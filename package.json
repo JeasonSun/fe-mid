@@ -11,7 +11,9 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "cross-env RUNNING_ENV=dev nest start --watch",
-    "start:hot": "cross-env RUNNING_ENV=dev nest build --webpack --webpackPath webpack-hmr.config.js --watch"
+    "start:hot": "cross-env RUNNING_ENV=dev nest build --webpack --webpackPath webpack-hmr.config.js --watch",
+    "start:prod": "node dist/main"
+
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

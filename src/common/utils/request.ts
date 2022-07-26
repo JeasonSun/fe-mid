@@ -1,6 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { getConfig } from './config';
-import { Logger, NotFoundException, HttpException } from '@nestjs/common';
+import {
+  Logger,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 
 const { SERVER_HOST } = getConfig();
 const logger = new Logger('requestUtil');
@@ -67,15 +72,33 @@ request.interceptors.response.use(
 
     return response.data;
   },
-  // function ({ response, config }) {
-  //   console.log('难不成在这里返回', response, config);
-  //   throw new HttpException(
-  //     {
-  //       message: response.statusText,
-  //       code: response.status,
-  //       error: response.data,
-  //     },
-  //     response.status,
-  //   );
-  // },
+  function (error) {
+    const { response, config = {} } = error;
+    if (error instanceof NotFoundException) {
+      throw new HttpException(response, HttpStatus.NOT_FOUND);
+    }
+
+    // 应该对三方的请求错误类型进行集中处理。
+    // `转发请求接口=${url},参数为=${JSON.stringify(data)},错误原因=${err.msg || '请求报错了'}; 请求接口状态code=${err.errCode}`
+
+    const { url, method } = config;
+    const { status, statusText, data } = response;
+    const message = `转发请求接口发生错误:${method}-${url} `;
+    logger.error(
+      `${message} ${JSON.stringify({
+        status,
+        statusText,
+        data,
+      })}`,
+    );
+
+    throw new HttpException(
+      {
+        message,
+        code: status,
+        error: statusText,
+      },
+      response.status,
+    );
+  },
 );
