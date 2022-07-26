@@ -24,7 +24,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const exceptionMessage = (exception.getResponse() ||
       {}) as ExceptionMessage;
-    let statusCode = exception.getStatus();
+    let statusCode = exception.getStatus() || HttpStatus.BAD_REQUEST;
     const responseData: ResponseDataType = exceptionMessage;
     if (exception instanceof BusinessException) {
       statusCode = HttpStatus.OK;
@@ -40,6 +40,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       url: request.originalUrl,
       method: request.method,
       ip: request.ip,
+      statusCode,
     };
 
     // 输出日志

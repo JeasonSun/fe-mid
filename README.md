@@ -81,7 +81,7 @@ export class TestService {
 - 在 DTO 中使用相关装饰器
 - 全局 filter:UnprocessableExceptionFilter 中能够捕捉到相关错误。
 
-### TODO:
+### TODO & QA:
 
 - 业务错误码已经定义，但是否能够提供默认统一的错误描述。
 - 统一日志输出内容规范，并且需要动态处理日志等级。
@@ -89,6 +89,7 @@ export class TestService {
 - 优化 UnprocessableExceptionFilter，输出具体 target 等信息。
 - SSR
 - Logger 需要再次处理，无法输出 Object，需要手动 Stringify 一下。
+- 数据库每次都要 imports && exports ?
 
 ### Demos:
 

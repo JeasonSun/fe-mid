@@ -10,4 +10,10 @@ export class TestController {
     const user = await this.testService.getUserName(data);
     return user;
   }
+
+  @Get('combined')
+  async combineApi() {
+    const combinedData = await this.testService.getCombinedInfo();
+    return combinedData;
+  }
 }

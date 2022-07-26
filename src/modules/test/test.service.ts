@@ -1,6 +1,8 @@
 import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { ResUserInfo } from './dto/test.dto';
+import { GetGameDataParam, getGameDataApi } from '@/helper/hao';
+import { getSpecialNewsApi } from '@/helper/wangyi';
 
 @Injectable()
 export class TestService {
@@ -32,5 +34,19 @@ export class TestService {
       });
     }
     return userInfo;
+  }
+
+  async getCombinedInfo() {
+    const gameParam: GetGameDataParam = {
+      type: 5,
+    };
+    return Promise.all([getSpecialNewsApi(), getGameDataApi(gameParam)]).then(
+      ([resSpecialNews, resGameData]) => {
+        return {
+          specialNews: resSpecialNews,
+          gameData: resGameData,
+        };
+      },
+    );
   }
 }
