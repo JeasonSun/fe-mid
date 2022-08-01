@@ -14,6 +14,7 @@ import {
   UnprocessableEntityException,
   ValidationPipe,
 } from '@nestjs/common';
+import { setupSwagger } from './setup/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -58,6 +59,11 @@ async function bootstrap() {
   );
 
   const config = app.get<ConfigService>(ConfigService);
+
+  const enableDocument = !!config.get('APP_CONFIG.ENABLE_DOCUMENT');
+  if (enableDocument) {
+    setupSwagger(app);
+  }
 
   const port = config.get('APP_CONFIG.PORT') || 8081;
 

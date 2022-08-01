@@ -93,6 +93,7 @@ export class TestService {
 - 统一日志输出内容规范，并且需要动态处理日志等级。
 - 根据实际业务，配置日志输出目标，细化日志输出落库与轮转功能。
 - 优化 UnprocessableExceptionFilter，输出具体 target 等信息。
+- 验证错误，有可能业务需要返回code为0， 如果跳过全局的Validate检查
 - SSR
 - Logger 需要再次处理，无法输出 Object，需要手动 Stringify 一下。
 - 数据库每次都要 imports && exports ?

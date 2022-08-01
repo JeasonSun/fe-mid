@@ -1,14 +1,20 @@
-import { Body, Controller, Post } from '@nestjs/common';
-// import { AuthService } from './auth.service';
-import { UserService } from '@/modules/user/user.service';
-import { RegisterUserDto } from './dto/register.user.dto';
+import { Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { SkipJwtAuth } from '@/common/decorators/auth.decorator';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { LocalAuthGuard } from './guards/local.auth.guard';
 
+@ApiTags('登录验证')
 @Controller('auth')
 export class AuthController {
-  constructor(private userService: UserService) {}
+  constructor(private authService: AuthService) {}
 
-  @Post('/register')
-  async register(@Body() payload: RegisterUserDto): Promise<void> {
-    return this.userService.create(payload);
+  @ApiBody({ type: LoginDto })
+  @SkipJwtAuth()
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 }
