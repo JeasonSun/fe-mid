@@ -31,7 +31,7 @@ import { CombinedModules } from './combined.module';
       host: getConfig('REDIS_CONFIG').host,
       port: getConfig('REDIS_CONFIG').port,
       db: getConfig('REDIS_CONFIG').db,
-      // auth_pass: getConfig('REDIS_CONFIG').auth,
+      auth_pass: getConfig('REDIS_CONFIG').pass,
     }),
 
     ...CombinedModules,

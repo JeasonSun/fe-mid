@@ -21,7 +21,6 @@ export class ApiConfigService {
   }
 
   get postgresConfig(): TypeOrmModuleOptions {
-    console.log(path.join(__dirname, `../../../**/*.postgres.entity{.ts,.js}`));
     return {
       type: 'postgres',
       autoLoadEntities: true,

@@ -1,0 +1,41 @@
+version: '3'
+services:
+  server:
+    container_name: fe-mid-starter
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "3000:8081"
+    environment:
+      RUNNING_ENV: 'pro'
+    volumes:
+      - ./src:/app/src
+      - .config:/app/.config
+    depends_on:
+      # - redis
+      - postgres
+
+  # redis:
+  #   image: redis
+  #   container_name: fe_redis
+  #   ports:
+  #     - 6380:6379
+  #   volumes:
+  #     - ./docker/redis/redis.conf:/etc/redis/redis.conf
+  #     - ./docker/redis/data:/data
+  #     - ./docker/redis/logs:/logs
+  #   command: redis-server /etc/redis/redis.conf
+  #   privileged: true
+  #   restart: always
+
+  postgres:
+    image: postgres
+    container_name: fe_postgres
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: fe_mid_starter_pro
+    restart: always
