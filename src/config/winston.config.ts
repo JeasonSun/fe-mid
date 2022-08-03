@@ -4,6 +4,7 @@ import 'winston-daily-rotate-file';
 import { getConfig } from '@/common/utils';
 
 const appName = getConfig('APP_NAME');
+const logPath = getConfig('APP_CONFIG.LOG_PATH');
 
 const customFormat = format.combine(
   format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -31,7 +32,7 @@ export function WinstonOption() {
           //这里重写关闭颜色，否则写入文件会乱码
           format.uncolorize(),
         ),
-        filename: './logs/application-%DATE%.log',
+        filename: `${logPath}/%DATE%.log`,
         ...defaultOptions,
       }),
     ],

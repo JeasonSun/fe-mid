@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { parse } from 'yaml';
+import { get } from 'lodash';
 
 export const getEnv = () => {
   return process.env.RUNNING_ENV;
@@ -16,7 +17,7 @@ export const getConfig = (name?: string) => {
   const file = fs.readFileSync(yamlPath, 'utf8');
   const config = parse(file);
   if (name) {
-    return config[name] || {};
+    return get(config, name, {});
   } else {
     return config;
   }

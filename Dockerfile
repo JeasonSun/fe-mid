@@ -7,12 +7,14 @@ COPY . ./
 
 RUN yarn build
 
-RUN mkdir -p /app
+RUN mkdir -p /usr/src/app
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY . /app/
+COPY . /usr/src/app/
 
-EXPOSE 8081
+ARG PORT=8081
+
+EXPOSE ${PORT}
 
 CMD ["yarn", "start:prod"]
