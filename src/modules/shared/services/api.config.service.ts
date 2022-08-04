@@ -21,20 +21,18 @@ export class ApiConfigService {
   }
 
   get postgresConfig(): TypeOrmModuleOptions {
-    return {
+    const config = {
       type: 'postgres',
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: this.getBoolean('POSTGRES_CONFIG.synchronize'),
       host: this.getString('POSTGRES_CONFIG.host'),
       port: this.getNumber('POSTGRES_CONFIG.port'),
       username: this.getString('POSTGRES_CONFIG.username'),
       password: this.getString('POSTGRES_CONFIG.password'),
       database: this.getString('POSTGRES_CONFIG.database'),
       logging: this.getBoolean('POSTGRES_CONFIG.enable_orm_logs'),
-      // entities: [
-      //   path.join(__dirname, `../../../**/*.postgres.entity{.ts,.js}`),
-      // ],
-    };
+    } as TypeOrmModuleOptions;
+    return config;
   }
 
   private getString(key: string): string {

@@ -93,7 +93,7 @@ export class TestService {
 - 统一日志输出内容规范，并且需要动态处理日志等级。
 - 根据实际业务，配置日志输出目标，细化日志输出落库与轮转功能。
 - 优化 UnprocessableExceptionFilter，输出具体 target 等信息。
-- 验证错误，有可能业务需要返回code为0， 如果跳过全局的Validate检查
+- 验证错误，有可能业务需要返回 code 为 0， 如果跳过全局的 Validate 检查
 - SSR
 - Logger 需要再次处理，无法输出 Object，需要手动 Stringify 一下。
 - 数据库每次都要 imports && exports ?
@@ -115,6 +115,24 @@ export class TestService {
 
 ##### Mysql
 
+## 开发与部署
 
-## 部署
-### docker compose
+### 热更新开发
+
+```
+yarn install
+yarn run start:hot
+```
+
+### 快速启动
+
+```
+docker-compose up --build -d
+```
+
+- --build 构建镜像
+- -d 后台运行
+
+### 分阶段启动
+
+在`docker-compose.yml`中，有多阶段容器启动配置，在实际业务中，redis、postgres 等服务可以不用再次重启，所以可以通过`docker-compose up --build server`单独重新构建和启动 server 服务。

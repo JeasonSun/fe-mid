@@ -6,36 +6,49 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - "3000:8081"
+      - "8081:8081"
     environment:
       RUNNING_ENV: 'pro'
+      NODE_ENV: 'production'
     volumes:
-      - ./src:/app/src
-      - .config:/app/.config
-    depends_on:
-      # - redis
+      - ./src:/node/app/src
+      - .config:/node/app/.config
+    links: 
+      - redis
       - postgres
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - fe-mid-network
 
-  # redis:
-  #   image: redis
-  #   container_name: fe_redis
-  #   ports:
-  #     - 6380:6379
-  #   volumes:
-  #     - ./docker/redis/redis.conf:/etc/redis/redis.conf
-  #     - ./docker/redis/data:/data
-  #     - ./docker/redis/logs:/logs
-  #   command: redis-server /etc/redis/redis.conf
-  #   privileged: true
-  #   restart: always
+  redis:
+    image: redis
+    container_name: fe_redis
+    ports: 
+      - 6379:6379
+    volumes:
+      - ./docker/redis/redis.conf:/etc/redis/redis.conf
+      - ./docker/redis/data:/data
+      - ./docker/redis/logs:/logs
+    command: redis-server /etc/redis/redis.conf
+    privileged: true
+    restart: always
+    networks:
+      - fe-mid-network
 
   postgres:
     image: postgres
     container_name: fe_postgres
     ports:
-      - 5433:5432
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: fe_mid_starter_pro
+      POSTGRES_DB: fe_mid_starter_local
     restart: always
+    networks:
+      - fe-mid-network
+
+networks:
+  fe-mid-network:
